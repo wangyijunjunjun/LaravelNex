@@ -34,4 +34,6 @@ Route::any('service/validate_code/create', 'Service\ValidateCodeController@creat
 
 Route::group(['prefix' => 'service'], function () {
     Route::get('category/parent_id/{parent_id}', 'Service\BookController@getCategoryByParentId');
+
+    Route::get('cart/add/{product_id}', 'Service\CartController@addCart');
 });

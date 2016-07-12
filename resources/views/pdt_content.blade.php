@@ -49,14 +49,14 @@
     </div>
 
     <div class="bk_fix_bottom">
-    <div class="bk_half_area">
-    <button class="weui_btn weui_btn_primary" onclick="_addCart();">加入购物车</button>
-    </div>
-    <div class="bk_half_area">
-    <button class="weui_btn weui_btn_default" onclick="_toCart()">查看购物车(<span id="cart_num"
-    class="m3_price">4</span>)
-    </button>
-    </div>
+        <div class="bk_half_area">
+            <button class="weui_btn weui_btn_primary" onclick="_addCart();">加入购物车</button>
+        </div>
+        <div class="bk_half_area">
+            <button class="weui_btn weui_btn_default" onclick="_toCart()">查看购物车(<span id="cart_num"
+                                                                                      class="m3_price">{{$count}}</span>)
+            </button>
+        </div>
     </div>
 
 @endsection
@@ -69,7 +69,7 @@
             auto: 2000,
             continuous: true,
             disableScroll: false,
-            callback: function (pos) {
+            callback: function(pos) {
                 var i = bullets.length;
                 while (i--) {
                     bullets[i].className = '';
@@ -85,30 +85,26 @@
                 url: '/service/cart/add/' + product_id,
                 dataType: 'json',
                 cache: false,
-                success: function (data) {
-                    if (data == null) {
+                success: function(data) {
+                    if(data == null) {
                         $('.bk_toptips').show();
                         $('.bk_toptips span').html('服务端错误');
-                        setTimeout(function () {
-                            $('.bk_toptips').hide();
-                        }, 2000);
+                        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                         return;
                     }
-                    if (data.status != 0) {
+                    if(data.status != 0) {
                         $('.bk_toptips').show();
                         $('.bk_toptips span').html(data.message);
-                        setTimeout(function () {
-                            $('.bk_toptips').hide();
-                        }, 2000);
+                        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
                         return;
                     }
 
                     var num = $('#cart_num').html();
-                    if (num == '') num = 0;
+                    if(num == '') num = 0;
                     $('#cart_num').html(Number(num) + 1);
 
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.log(xhr);
                     console.log(status);
                     console.log(error);

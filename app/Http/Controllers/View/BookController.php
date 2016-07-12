@@ -37,12 +37,28 @@ class BookController extends Controller
 //        return $products;
     }
 
-    public function toPdt_content($product_id)
+    public function toPdt_content(Request $request, $product_id)
     {
         $product = Product::find($product_id);
         $pdt_content = PdtContent::where('product_id', $product_id)->first();
         $pdt_images = PdtImages::where('product_id', $product_id)->get();
-        return view('pdt_content')->with('product', $product)->with('pdt_content', $pdt_content)->with('pdt_images', $pdt_images);
+
+        //查询这一个会话（cookie）里的初始值
+        $bk_cart = $request->cookie('bk_cart');
+        $bk_cart_arr = ($bk_cart != null ? explode(',', $bk_cart) : array());
+        $count = 0;
+        foreach ($bk_cart_arr as $value) {
+            $index = strpos($value, ':');
+            if (substr($value, 0, $index) == $product_id) {
+                $count = (int)substr($value, $index + 1);
+                break;
+            }
+        }
+
+        return view('pdt_content')->with('product', $product)
+            ->with('pdt_content', $pdt_content)
+            ->with('pdt_images', $pdt_images)
+            ->with('count', $count);
 
 //        return $pdt_images;
     }
